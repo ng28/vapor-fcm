@@ -9,6 +9,9 @@ public struct FirebaseResponse {
 
 	/// Indicates if everything was successful
 	public let success: Bool
+    
+    // Indicates if multicast was successful
+    public let status: Bool
 
 	/// Error(s) that occured while sending a message
 	public let error: FirebaseError?
@@ -24,6 +27,7 @@ public struct FirebaseResponse {
 	internal init(firebaseError: FirebaseError) {
 		self.success = false
 		self.error = firebaseError
+        self.status = false
 	}
 
 	internal init(error: Error) {
@@ -31,8 +35,12 @@ public struct FirebaseResponse {
 	}
 
 	internal init(bytes: [UInt8], statusCode: Int) {
+        //if let string = String(bytes: bytes, encoding: .utf8) {
+        //    print(string)
+        //}
 		guard statusCode == 200 else {
 			self.success = false
+            self.status = false
 			self.error = FirebaseError(statusCode: statusCode)
 			return
 		}
@@ -40,6 +48,7 @@ public struct FirebaseResponse {
 			let dict = json as? [String: Any] else {
 				self.success = false
 				self.error = .invalidData
+                self.status = false
 				return
 		}
 
@@ -58,5 +67,6 @@ public struct FirebaseResponse {
 
 		self.success = errors.isEmpty && !messageIds.isEmpty
 		self.error = FirebaseError(multiple: errors)
+        self.status = !messageIds.isEmpty
 	}
 }

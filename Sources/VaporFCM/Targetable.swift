@@ -7,5 +7,5 @@ import Foundation
 /// As of this moment, this could be a DeviceToken, a Topic, and group of Topics.
 public protocol Targetable {
 	var targetKey: String { get }
-	var targetValue: String { get }
+	var targetValue: Any { get }
 }

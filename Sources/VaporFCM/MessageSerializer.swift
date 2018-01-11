@@ -19,7 +19,11 @@ public class MessageSerializer {
 
 	public func serialize(message: Message, target: Targetable) -> [String: Any] {
 		var json: [String: Any] = [:]
-		json[target.targetKey] = target.targetValue
+        if target is DeviceTokens {
+            json[target.targetKey] = target.targetValue
+        } else {
+            json[target.targetKey] = target.targetValue
+        }
 
 		if message.debug {
 			json[MessageKey.dryRun.rawValue] = message.debug

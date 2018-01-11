@@ -27,7 +27,7 @@ extension DeviceTokens: Targetable {
         return "registration_ids"
     }
     
-    public var targetValue: String {
-        return rawValues.joined(separator: ",")
+    public var targetValue: Any {
+        return rawValues
     }
 }

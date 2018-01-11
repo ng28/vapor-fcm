@@ -20,7 +20,7 @@ extension DeviceToken: Targetable {
 		return "to"
 	}
 
-	public var targetValue: String {
+	public var targetValue: Any {
 		return rawValue
 	}
 }

@@ -15,7 +15,7 @@ public struct Topic {
 }
 
 extension Topic: Targetable {
-	public var targetValue: String {
+	public var targetValue: Any {
 		switch rawTopics.count {
 		case 0:
 			return ""
