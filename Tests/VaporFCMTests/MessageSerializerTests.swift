@@ -9,14 +9,22 @@ class MessageSerializerTests: XCTestCase {
 	var sut: MessageSerializer!
 	let exampleToken = DeviceToken("example_token")
 	let exampleToken2 = DeviceToken("example_token_sdafegrfiefhaslifuharilfugdfisl")
-	let simplePayload = Payload(text: "Hello world")
-	let bigPayload = Payload(title: "This is a title", body: "this is a body", badge: 14)
+    let simplePayload = Payload(text: "Hello world")
+    let bigPayload = Payload(title: "This is a title", body: "this is a body", badge: 14)
 
+    var tokens: Array<String>!
+    var exampleTokens: DeviceTokens!
 	var json: [String: Any]!
 
 	override func setUp() {
 		super.setUp()
 		sut = MessageSerializer()
+        
+        tokens = Array<String>()
+        tokens.append("token1")
+        tokens.append("token2")
+        
+        exampleTokens = DeviceTokens(tokens)
 	}
 
 	override func tearDown() {
@@ -33,6 +41,15 @@ class MessageSerializerTests: XCTestCase {
 		XCTAssertEqual(json["dry_run"] as? Bool, nil)
 		XCTAssertEqual(json.count, 2)
 	}
+    
+    func testMultiTokensSimplePayload() {
+        let message = Message(payload: simplePayload)
+        json = sut.serialize(message: message, target: exampleTokens)
+        XCTAssertEqual(json["registration_ids"] as? String, exampleTokens.rawValues.joined(separator: ","))
+        XCTAssertEqual((json["notification"] as? [String: Any])?["body"] as? String, "Hello world")
+        XCTAssertEqual(json["dry_run"] as? Bool, nil)
+        XCTAssertEqual(json.count, 2)
+    }
 
 	func testPayloadWithSoundAndBadge() {
 		var payload = bigPayload
@@ -106,7 +123,8 @@ class MessageSerializerTests: XCTestCase {
             ("testSendingMessageToSingleTopic2", testSendingMessageToSingleTopic2),
             ("testSendingMessageToTwoTopics", testSendingMessageToTwoTopics),
             ("testSendingMessageToFiveTopics", testSendingMessageToFiveTopics),
-            ("testSendingMessageToEmptyTopics", testSendingMessageToEmptyTopics)
+            ("testSendingMessageToEmptyTopics", testSendingMessageToEmptyTopics),
+            ("testMultiTokensSimplePayload", testMultiTokensSimplePayload)
         ]
     }
 }
