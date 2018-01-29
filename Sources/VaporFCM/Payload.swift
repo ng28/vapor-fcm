@@ -67,7 +67,7 @@ extension Payload {
         case id2 = "id2"
 	}
 
-    func makeJson() -> [String: AnyHashable] {
+    public func makeJson() -> [String: AnyHashable] {
 		var json: [String: AnyHashable] = [:]
 
 		if let badge = badge { json[PayloadKey.badge.rawValue] = badge }
