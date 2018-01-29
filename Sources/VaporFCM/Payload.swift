@@ -38,6 +38,16 @@ public struct Payload {
 	/// in the Library/Sounds folder of the app's data container.
 	/// See the iOS Developer Library for more information.
 	public var sound: String?
+    
+    // Android Only
+    // Deep link representation
+    public var uri: String?
+    
+    // Internal id representations for tap event
+    public var id1: String?
+    
+    // Internal id representations for tap event
+    public var id2: String?
 
 	public init() {}
 }
@@ -52,9 +62,12 @@ extension Payload {
 		case tag = "tag"
 		case color = "color"
 		case sound = "sound"
+        case uri = "uri"
+        case id1 = "id1"
+        case id2 = "id2"
 	}
 
-	internal func makeJson() -> [String: AnyHashable] {
+    func makeJson() -> [String: AnyHashable] {
 		var json: [String: AnyHashable] = [:]
 
 		if let badge = badge { json[PayloadKey.badge.rawValue] = badge }
@@ -64,7 +77,10 @@ extension Payload {
 		if let tag = tag { json[PayloadKey.tag.rawValue] = tag }
 		if let color = color { json[PayloadKey.color.rawValue] = color }
 		if let sound = sound { json[PayloadKey.sound.rawValue] = sound }
-
+        if let uri = uri { json[PayloadKey.uri.rawValue] = uri}
+        if let id1 = id1 { json[PayloadKey.id1.rawValue] = id1}
+        if let id2 = id2 { json[PayloadKey.id2.rawValue] = id2}
+        
 		return json
 	}
 }
@@ -95,5 +111,8 @@ extension Payload: Equatable {
 			&& lhs.tag == rhs.tag
 			&& lhs.color == rhs.color
 			&& lhs.sound == rhs.sound
+            && lhs.uri == rhs.uri
+            && lhs.id1 == rhs.id1
+            && lhs.id2 == rhs.id2
 	}
 }
